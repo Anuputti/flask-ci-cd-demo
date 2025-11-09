@@ -25,14 +25,16 @@ pipeline {
             steps {
                 script {
                     sh '''
-                    docker run -d -p 5000:5000 --name test_app $IMAGE_NAME:latest
-                    sleep 5
-                    curl -f http://localhost:5000/
+                    docker run -d --network jenkins-net --name test_app flask-ci-cd-demo:latest
+                    sleep 8
+                    docker logs test_app
+                    docker exec $(docker ps -q -f name=test_app) curl -f http://localhost:5000/ || (docker ps && exit 1)
                     docker stop test_app
                     '''
                 }
             }
         }
+
 
         stage('Push to DockerHub') {
             steps {
