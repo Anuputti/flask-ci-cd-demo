@@ -1,23 +1,12 @@
 pipeline {
     agent any
 
-    options {
-        disableConcurrentBuilds()
-        skipDefaultCheckout()
-    }
-
     environment {
         IMAGE_NAME = "flask-ci-cd-demo"
         DOCKERHUB_USER = "ananya777"
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                git branch: 'main', url: 'https://github.com/Anuputti/flask-ci-cd-demo.git'
-            }
-        }
-        
         stage('Build Docker Image') {
             steps {
                 script {
@@ -29,7 +18,6 @@ pipeline {
         stage('Test Container') {
             steps {
                 script {
-                    // run container temporarily and test endpoint
                     sh '''
                     docker run -d -p 5000:5000 --name test_app $IMAGE_NAME:latest
                     sleep 5
