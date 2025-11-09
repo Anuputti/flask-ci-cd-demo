@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    options {
+        disableConcurrentBuilds()
+        skipDefaultCheckout()
+    }
+
     environment {
         IMAGE_NAME = "flask-ci-cd-demo"
         DOCKERHUB_USER = "ananya777"
