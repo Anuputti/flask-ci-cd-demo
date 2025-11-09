@@ -1,5 +1,8 @@
 FROM python:3.11-slim
 
+# Install curl (needed for testing inside container)
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+
 # Set workdir
 WORKDIR /app
 
