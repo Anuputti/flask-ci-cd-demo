@@ -7,6 +7,12 @@ pipeline {
     }
 
     stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/Anuputti/flask-ci-cd-demo.git'
+            }
+        }
+        
         stage('Build Docker Image') {
             steps {
                 script {
