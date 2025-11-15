@@ -50,6 +50,17 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                sh '''
+                    kubectl apply -f k8s/deployment.yaml
+                    kubectl apply -f k8s/service.yaml
+                    kubectl rollout status deployment/flask-ci-cd-demo
+                    '''
+            }
+        }
+
     }
 
     post {
