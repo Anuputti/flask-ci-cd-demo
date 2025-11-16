@@ -50,24 +50,6 @@ pipeline {
                 }
             }
         }
-
-        stage('Deploy to Minikube') {
-            steps {
-                script {
-                    echo "Deploying to Minikube..."
-
-                    // Ensure kubectl can talk to Minikube
-                    sh "minikube update-context"
-
-                    // Apply deployment & service manifests
-                    sh "kubectl apply -f k8s/deployment.yaml"
-                    sh "kubectl apply -f k8s/service.yaml"
-
-                    // Wait for rollout to complete
-                    sh "kubectl rollout status deployment/flask-app"
-                }
-            }
-        }
     }
 
 
