@@ -3,7 +3,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return "Hello from CI/CD demo!"
+    return "Hello from CI/CD demo"
 
 if __name__ == '__main__':
     # for local debug only; in Docker we'll run via gunicorn
