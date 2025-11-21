@@ -51,6 +51,21 @@ pipeline {
             }
         }
 
+        stage('Deploy to Kubernetes') {
+            steps {
+                script {
+                    sh '''
+                    echo "Applying Kubernetes manifests..."
+                    kubectl apply -f k8s/deployment.yaml
+                    kubectl apply -f k8s/service.yaml
+
+                    echo "Waiting for rollout..."
+                    kubectl rollout status deployment/flask-ci-cd-demo
+                    '''
+                }
+            }
+        }
+
     }
 
 

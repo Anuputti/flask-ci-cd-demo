@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-ci-cd-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flask-ci-cd-demo
+  template:
+    metadata:
+      labels:
+        app: flask-ci-cd-demo
+    spec:
+      containers:
+        - name: flask-ci-cd-demo
+          image: ananya777/flask-ci-cd-demo:latest
+          ports:
+            - containerPort: 5000
+
