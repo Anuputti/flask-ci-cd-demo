@@ -23,15 +23,26 @@ pipeline {
 
         stage('Test Container') {
             steps {
-                script {
                     sh '''
-                    docker run -d --network jenkins-net --name test_app flask-ci-cd-demo:latest
-                    sleep 8
-                    docker logs test_app
-                    docker exec $(docker ps -q -f name=test_app) curl -f http://localhost:5000/ || (docker ps && exit 1)
-                    docker stop test_app
+                       # run the container and publish port so we can curl from host (Jenkins)
+                       docker run -d --name test_app -p 5000:5000 ${DOCKERHUB_USER}/${IMAGE_NAME}:latest
+
+                       # wait for app to start (increase if your app needs more time)
+                       sleep 5
+
+                       # try to curl the health/root endpoint; on failure print logs and fail
+                       if ! curl -fsS http://localhost:5000/ ; then
+                       echo "App did not respond. Container logs:"
+                       docker logs test_app || true
+                       docker stop test_app || true
+                       docker rm -f test_app || true
+                       exit 1
+      		       fi
+
+                       # cleanup
+		       docker stop test_app || true
+     		       docker rm -f test_app || true
                     '''
-                }
             }
         }
 
