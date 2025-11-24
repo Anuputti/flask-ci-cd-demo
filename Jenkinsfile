@@ -84,21 +84,5 @@ pipeline {
         always {
             sh 'docker system prune -af || true'
         }
-
-       success {
-            emailext (
-            subject: "Build SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-            body: "Your build was successful!\n\nCheck console output: ${env.BUILD_URL}",
-            to: "ananya05d@gmail.com"
-        )
-    }			        
-        
-	failure {
-            emailext (
-            subject: "Build FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-            body: "Your build failed!\n\nPlease check the logs: ${env.BUILD_URL}",
-            to: "ananya05d@gmail.com"
-        )
     }
-  }
 }
